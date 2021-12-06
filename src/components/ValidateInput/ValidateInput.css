@@ -3,7 +3,7 @@
   margin-bottom: 16px;
   flex-direction: column;
   position: relative;
-  width:80%
+  width: 80%;
 }
 
 .form-label,
@@ -25,6 +25,7 @@
   border-radius: 3px;
   outline: none;
   font-size: 1.2rem;
+  box-shadow: 0px 4px 12px #999999;
 }
 
 .form-control:hover {
@@ -50,19 +51,18 @@
   flex-direction: column;
   top: 100px;
   padding: 0px 5px;
-  width:100%;
+  width: 100%;
   background-color: rgb(219, 217, 217);
   border-radius: 8px;
   max-height: 200px;
   overflow: auto;
-  
 }
-.input-dropdown-item{
+.input-dropdown-item {
   margin: 5px 0px;
-  font-size:large;
-  padding: 10px ;
+  font-size: large;
+  padding: 10px;
   border-radius: 8px;
 }
-.input-dropdown-item:hover{
+.input-dropdown-item:hover {
   background-color: rgb(245, 245, 245);
 }

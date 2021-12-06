@@ -2,27 +2,35 @@ import "./Register.css";
 import Button from "../../components/Button/Button";
 import ValidateInput from "../../components/ValidateInput/ValidateInput";
 import ValidateSelect from "../../components/ValidateSelect/ValidateSelect";
-import { useState} from "react";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
 const Register = () => {
-  const [registerData, setRegisterDataMain] = useState({
-    address: "",
-    avatar: "",
-    city: "",
-    fullName: "",
-    passWord: "",
-    phone: "",
-    // "studentCode": "",
-    // "teacherCode": "string",
-    userName: ""
-  });
+  // const [registerDataMain, setRegisterDataMain] = useState({});
+  const history = useHistory();
   const handleOnClick = (e) => {
     e.preventDefault();
-    const temp = {}
+    const registerData = {};
     const inputData = document.querySelectorAll(".form-control");
-    inputData.forEach(data => {
-        temp[data.name] = data.value;
-    })
-    setRegisterDataMain(temp)
+    inputData.forEach((data) => {
+      registerData[data.name] = data.value;
+    });
+    registerData[registerData["role"]] = registerData["codeID"];
+    delete registerData["role"];
+    delete registerData["codeID"];
+    delete registerData["confirmPassword"];
+    console.log(registerData);
+    axios
+      .post("/api/register", registerData)
+      .then((response) => {
+        console.log(response.data);
+        alert(response.data);
+        history.push("/login");
+      })
+      .catch((error) => {
+        console.log(error.message);
+        alert("Tên người dùng đã tồn tại");
+      });
   };
   return (
     <div className="register-container">
@@ -33,22 +41,28 @@ const Register = () => {
 
         <ValidateInput
           type="text"
-          name="accountName"
+          name="userName"
           rules="required"
           lable="Tên đăng nhập"
         />
         <ValidateInput
-          type="text"
-          name="password"
-          id="password"
+          type="password"
+          name="passWord"
+          id="passWord"
           rules="required"
           lable="Mật khẩu "
         />
         <ValidateInput
           type="password"
           name="confirmPassword"
-          rules="required|confirm:password"
+          rules="required|confirm:passWord"
           lable="Xác nhận lại mật khẩu"
+        />
+        <ValidateInput
+          type="text"
+          name="fullName"
+          rules="required"
+          lable="Họ và tên"
         />
         <ValidateInput
           type="text"
@@ -56,19 +70,28 @@ const Register = () => {
           rules="required|email"
           lable="Email"
         />
-        <ValidateSelect name="major" rules="required" lable="Chuyên ngành">
-          <option className="default-option" value="">
-            -Chọn ngành-
-          </option>
-          <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-          <option value="Công nghệ sinh học">Công nghệ sinh học</option>
-          <option value="Kiến trúc">Kiến trúc</option>
-          <option value="Nhiệt điện">Nhiệt điện</option>
-        </ValidateSelect>
+        <ValidateInput
+          type="number"
+          name="phone"
+          rules="required"
+          lable="Số điện thoại"
+        />
+        <ValidateInput
+          type="text"
+          name="city"
+          rules="required"
+          lable="Thành phố"
+        />
+        <ValidateInput
+          type="text"
+          name="address"
+          rules="required"
+          lable="Địa chỉ"
+        />
         <div className="role-select">
           <ValidateSelect name="role" lable="Role">
-            <option value="student">Học sinh</option>
-            <option value="teacher">Giáo viên</option>
+            <option value="studentCode">Học sinh</option>
+            <option value="teacherCode">Giáo viên</option>
           </ValidateSelect>
           <ValidateInput
             type="text"

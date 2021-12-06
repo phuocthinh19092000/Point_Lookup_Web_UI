@@ -104,12 +104,13 @@ const ValidateInput = (props) => {
         id={props.id}
         onChange={handleOnChange}
         onBlur={handleOnBlur}
+        placeholder={props.placeholder}
       />
       <span className="form-message">{formMessage}</span>
       {isShowDropdown && dropdownList && value && (
         <div className="input-search-dropdown">
-          {dropdownList.map((item) => (
-            <div className="input-dropdown-item" onClick={() => {setValue(item); setIsShowDropdown(false) }}>
+          {dropdownList.map((item, index) => (
+            <div key = {index} className="input-dropdown-item" onClick={() => {setValue(item); setIsShowDropdown(false) }}>
               {item}
             </div>
           ))}

@@ -1,16 +1,17 @@
-.info-item{
-    margin-top: 20px;
-    font-size: large;
-    flex: 1 0 30%;
+.info-item {
+  margin-top: 20px;
+  font-size: large;
+  flex: 1 0 30%;
 }
-.profile-input{
-    width: 80%;
-    height: 35px;
-    text-indent: 10px;
+.profile-input {
+  width: 80%;
+  height: 35px;
+  text-indent: 10px;
+  box-shadow: 0 2px 5px 0 rgba(121, 122, 122, 0.1);
 }
-.study-info-item{
-    width: 80%;
-    flex: 1 0 40%;
-    font-size: large;
-    margin-bottom: 40px;
+.study-info-item {
+  width: 80%;
+  flex: 1 0 40%;
+  font-size: large;
+  margin-bottom: 40px;
 }

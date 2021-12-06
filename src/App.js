@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header/Header";
@@ -7,10 +8,12 @@ import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import ScoreStudent from "./pages/Student/ScoreStudent/ScoreStudent";
 import ScoreTeacher from "./pages/Teacher/ScoreTeacher/ScoreTeacher";
+import SubjectTeacher from "./pages/Teacher/SubjectTeacher/SubjectTeacher";
 import ManageTeacherAccount from "./pages/Admin/ManageTeacherAccount/ManageTeacherAccount";
 import ManageStudentAccount from "./pages/Admin/ManageStudentAccount/ManageStudentAccount";
 import ManageMajor from "./pages/Admin/ManageMajor/ManageMajor";
 import AdminProfile from "./pages/Admin/AdminProfile/AdminProfile";
+import SubjectAdmin from "./pages/Admin/SubjectAdmin/SubjectAdmin";
 import StudentProfile from "./pages/Student/StudentProfile/StudentProfile";
 import TeacherProfile from "./pages/Teacher/TeacherProfile/TeacherProfile";
 import ManageClass from "./pages/Admin/ManageClass/ManageClass";
@@ -21,9 +24,19 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 axios.defaults.baseURL = "http://127.0.0.1:8080";
-axios.defaults.headers = {
-  Authorization: `Bearer ${localStorage.getItem("token")}`,
-};
+// axios.defaults.headers = {
+//   Authorization: "Bearer ".concat(localStorage.getItem("token")),
+// };
+axios.interceptors.request.use((config) => {
+  let token = localStorage.getItem("token");
+  config.headers = Object.assign(
+    {
+      Authorization: `Bearer ${token}`,
+    },
+    config.headers
+  );
+  return config;
+});
 
 function App() {
   return (
@@ -35,6 +48,8 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/scorestudent" component={ScoreStudent} />
           <Route exact path="/scoreteacher" component={ScoreTeacher} />
+          <Route exact path="/subjectteacher" component={SubjectTeacher} />
+          <Route exact path="/subjectadmin" component={SubjectAdmin} />
           <Route
             exact
             path="/manageteacheraccount"

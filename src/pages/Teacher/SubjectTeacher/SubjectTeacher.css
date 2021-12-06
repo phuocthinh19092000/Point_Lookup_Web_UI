@@ -1,0 +1,15 @@
+.view-students{
+    text-align: center;
+    margin:0
+}
+.view-students:hover{
+    text-decoration: underline;
+}
+.add-student{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-top: 1px solid rgb(87, 84, 84);
+    padding-top: 10px
+}

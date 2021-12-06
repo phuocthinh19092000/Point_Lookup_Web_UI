@@ -8,7 +8,7 @@ import ValidateSelect from "../../../components/ValidateSelect/ValidateSelect";
 const Schedule = () => {
   return (
     <>
-      <Header>
+      <Header isLoggedIn={true} name ={JSON.parse(localStorage.getItem('user')).fullName}>
         <div className="nav-item-header">
           <b>Cá nhân</b>
           <div className="dropdown-content">
@@ -21,17 +21,13 @@ const Schedule = () => {
         <div className="nav-item-header">
           <b>Yêu cầu</b>
           <div className="dropdown-content">
-            <Link>Yêu cầu nhà trường</Link>
-            <Link>Yêu cầu nhà trường</Link>
-            <Link>Yêu cầu nhà trường</Link>
+            
           </div>
         </div>
         <div className="nav-item-header">
           <b>Khác</b>
           <div className="dropdown-content">
-            <Link>Chức năng 1</Link>
-            <Link>Chức năng 2</Link>
-            <Link>Chức năng 3</Link>
+            
           </div>
         </div>
       </Header>
@@ -118,8 +114,8 @@ const Schedule = () => {
               <tr>
                 <th scope="row">3</th>
                 <td>Hệ thống thông tin</td>
-                <td>@mdo</td>
-                <td>Larry the Bird</td>
+                <td>8</td>
+                <td>8</td>
                 <td>Ngày: 05/09/2021, Phòng: , Giờ: 15h00, Xuất: 2C4</td>
               </tr>
             </tbody>

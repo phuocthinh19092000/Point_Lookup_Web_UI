@@ -1,15 +1,15 @@
-.carousel-item{
-    height: 300px;
+.carousel-item {
+  height: 300px;
 }
-.carousel.slide{
-    margin: 5px 0px;
-    border: solid 1px rgb(68, 27, 27);
+.carousel.slide {
+  margin: 5px 0px;
+  border: solid 1px rgb(68, 27, 27);
 }
-.announcement{
-    margin: 20px;
-    border: solid 1px rgb(104, 102, 102);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding:10px;
+.announcement {
+  margin: 20px;
+  border-top: solid 1px rgb(104, 102, 102);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
 }

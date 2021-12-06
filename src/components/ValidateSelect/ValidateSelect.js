@@ -90,7 +90,7 @@ const ValidateSelect = (props) => {
         name={props.name}
         rules={props.rules}
         className="form-control"
-        onChange={handleOnChange}
+        onChange={props.onChange ||  handleOnChange}
         onBlur={handleOnBlur}
       >
         {props.children}

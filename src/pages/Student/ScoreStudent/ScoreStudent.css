@@ -1,18 +1,22 @@
-.score-page-title{
-    margin: 10px 0px 10px 30px;
-    width:50%;
-    border-bottom: 1px solid #111;
-    padding-bottom: 10px;
+.score-page-title {
+  margin: 10px 0px 10px 30px;
+  width: 50%;
+  border-bottom: 1px solid #111;
+  padding-bottom: 10px;
 }
-.average-score, .detail-score{
-    margin: 30px 30px 30px 30px;
-    border:solid 1px rgb(122, 122, 122);
-    padding:10px
+.average-score,
+.detail-score {
+  margin: 30px 30px 30px 30px;
+  border: solid 1px rgb(122, 122, 122);
+  padding: 10px;
+  box-shadow: 0 2px 5px 0 rgba(121, 122, 122, 0.1);
 }
-Table{
-    text-align: center;
-    vertical-align: middle;
+Table {
+  text-align: center;
+  vertical-align: middle;
+  box-shadow: 2px 5px rgba(121, 122, 122, 0.1);
 }
-th, td {
-    vertical-align: middle;
+th,
+td {
+  vertical-align: middle;
 }

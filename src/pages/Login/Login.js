@@ -3,6 +3,7 @@ import Button from "../../components/Button/Button";
 import ValidateInput from "../../components/ValidateInput/ValidateInput";
 import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import backIcon from "../../shared/assets/img/icons8-back-64.png";
 import axios from "axios";
 import {
   BrowserRouter as Router,
@@ -16,10 +17,10 @@ const Login = () => {
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     const loginInputs = document.querySelectorAll(".form-control");
-    console.log({
-      username: loginInputs[0].value,
-      password: loginInputs[1].value,
-    })
+    // console.log({
+    //   username: loginInputs[0].value,
+    //   password: loginInputs[1].value,
+    // })
     axios
       .post("http://localhost:8080/api/login", {
         username: loginInputs[0].value,
@@ -31,27 +32,28 @@ const Login = () => {
       })
       .catch((error) => {
         console.log(error);
+        alert("Đăng nhập thất bại");
       });
   };
 
   return (
     <div className="login-page">
       <div className="deco-login">
-        <div>
-          <h1>{"TRANG ĐĂNG NHẬP"}</h1>
-        </div>
+        <div></div>
         <div className="spacer"></div>
         <div style={{ marginBottom: "50px" }}>
-          <h3>{"Hệ thống tra cứu & quản lý điểm"}</h3>
+          <h1>Hệ thống tra cứu</h1>
+          <h1>&&</h1>
+          <h1>Quản lý điểm</h1>
         </div>
         <Link to="/" class="back-to-home">
+          <img src={backIcon} alt="" />
           Quay lại trang chủ
         </Link>
       </div>
       <div className="login-container">
         <form onSubmit={handleSubmitLogin} method="POST" className="form-login">
           <h2 className="login-form-heading">Đăng nhập</h2>
-          <p className="login-form-desc">Hệ thống quản lý tra cứu điểm</p>
           <div className="spacer"></div>
 
           <ValidateInput

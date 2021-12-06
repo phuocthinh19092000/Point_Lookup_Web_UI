@@ -1,34 +1,37 @@
-.add-major, .edit-major{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.add-major,
+.edit-major {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
-.add-major .form-submit{
-    background-color: white;
-    border: 2px solid #23554f;
-    width: 50%;
+.add-major .form-submit {
+  background-color: white;
+  border: 2px solid #1e90ff;
+  width: 50%;
+  color: black;
 }
-.add-major .form-submit:hover{
-    background-color: #23554f;
-    color: white;
+.add-major .form-submit:hover {
+  background-color: #1e90ff;
+  color: white;
 }
-.edit-major .form-submit{
-    background-color: white;
-    border: 2px solid #23554f;
-    height: 28px;
-    width:30%;
-    font-size:medium;
-    margin:0;
-    padding:0;
+.edit-major .form-submit {
+  background-color: white;
+  border: 2px solid #1e90ff;
+  height: 28px;
+  width: 30%;
+  font-size: medium;
+  margin: 0;
+  padding: 0;
 }
-.edit-major .form-submit:hover{
-    background-color: #23554f;
-    color: white;
+.edit-major .form-submit:hover {
+  background-color: #1e90ff;
+  color: white;
 }
-.view-classes{
-    text-align: center;
-    margin:0
+
+.view-classes {
+  text-align: center;
+  margin: 0;
 }
-.view-classes:hover{
-    text-decoration: underline;
+.view-classes:hover {
+  text-decoration: underline;
 }

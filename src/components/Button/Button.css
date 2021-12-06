@@ -1,23 +1,24 @@
 .form-submit {
-    outline: none;
-    background-color: #1dbfaf;
-    margin: 12px 0px 12px 0px;
-    padding: 12px 16px;
-    font-weight: 600;
-    color: #111616;
-    border: none;
-    width: 100%;
-    font-size: larger;
-    border-radius: 8px;
-    cursor: pointer;
-    width: 80%
-  }
-  
-  .form-submit:hover {
-    background-color:#23554f;
-    color:#fcf6f6
-  }
-  .save-profile-btn{
-    margin-top: 0;
-    width: 20%
+  outline: none;
+  background-color: #00bfff;
+  margin: 12px 0px 12px 0px;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: #111616;
+  border: none;
+  width: 100%;
+  font-size: larger;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 80%;
+  box-shadow: 0px 4px 12px #999999;
+}
+
+.form-submit:hover {
+  background-color: #1e90ff;
+  color: #fcf6f6;
+}
+.save-profile-btn {
+  margin-top: 0;
+  width: 20%;
 }

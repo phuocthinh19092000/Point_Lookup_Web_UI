@@ -16,8 +16,8 @@ const PrivateRoute = ({ children, ...rest }) => {
   if (user == null) {
     return "Loading...";
   } // user == null thì tiếp tục gọi useProvide chờ promise resolve
-  const myUser = user.data;
-  if (myUser.userName == null) {
+  const myUser = user == null ? null : user.data;
+  if (myUser == {} || myUser == null) {
     return (
       <Redirect
         to={{

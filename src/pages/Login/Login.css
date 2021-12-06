@@ -10,59 +10,64 @@
   justify-content: center;
   align-items: center;
   font: bold italic xx-large serif;
-  color: #205c56;
+  color: rgb(12, 12, 12);
   text-align: center;
 }
 .deco-login h1 {
   font-size: 4.5rem;
   font-weight: 600;
 }
-.deco-login h3{
+.deco-login h3 {
   font-size: 2.9rem;
 }
 .deco-login .back-to-home {
-  color: #205c56;
-  font-weight: 500
+  color: rgb(48, 46, 46);
+  font-weight: 500;
+  background-color: #00bfff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  text-decoration: none;
+  box-shadow: 0px 4px 12px #999999;
 }
 .deco-login .back-to-home:hover {
   color: #0c2926;
-  font-weight: 800
+  font-weight: 800;
 }
 .login-form-heading {
-    font-size: xx-large;
-  }
-.login-form-desc {
-    text-align: center;
-    color: #636d77;
-    font-size: 1.8rem;
-    font-weight: lighter;
-    line-height: 2.4rem;
-    margin-top: 0px;
-    font-weight: xx-large;
+  font-size: xx-large;
 }
-.login-container{
-    flex:1;
-    background: #f1f1f1;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
+.login-form-desc {
+  text-align: center;
+  color: #636d77;
+  font-size: 1.8rem;
+  font-weight: lighter;
+  line-height: 2.4rem;
+  margin-top: 0px;
+  font-weight: xx-large;
+}
+.login-container {
+  flex: 1;
+  background: #f1f1f1;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
 }
 .form-login {
-    flex: 1;
-    max-width: 60%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items:center;
-    min-height: 100px;
-    padding: 20px 0px;
-    background: #fff;
-    border-radius: 2px;
-    margin: 24px;
-    align-self: center;
-    box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
-  }
-  .register-link {
-    text-decoration: underline;
-    color: #205c56;
-  }
+  flex: 1;
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100px;
+  padding: 20px 0px;
+  background: #fff;
+  border-radius: 2px;
+  margin: 24px;
+  align-self: center;
+  box-shadow: 0 2px 5px 0 rgba(51, 62, 73, 0.1);
+}
+.register-link {
+  text-decoration: underline;
+  color: rgb(48, 46, 46);
+}
