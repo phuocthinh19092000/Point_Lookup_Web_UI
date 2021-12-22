@@ -37,7 +37,6 @@ const SubjectAdmin = () => {
     axios
       .post("/api/addSubject", data)
       .then((response) => {
-        console.log(response.data);
         setModalAdd(false);
         setErrorMessage("");
       })
@@ -49,7 +48,6 @@ const SubjectAdmin = () => {
 
   const handleSearchSubjects = () => {
     const searchInput = document.querySelector(".form-control").value;
-    console.log(searchInput);
     if (searchInput) {
       setSubject(
         allSubjectsRef.current.filter((item) =>

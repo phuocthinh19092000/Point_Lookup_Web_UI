@@ -56,6 +56,7 @@ const ManageClass = () => {
   };
   const handleAddStudents = () => {
     const addStudentData = document.querySelector(".add-student-data");
+    const fileText = document.querySelector(".upload-file");
     if (fileValue) {
       const formData = new FormData();
       formData.append("file", fileValue);
@@ -70,6 +71,9 @@ const ManageClass = () => {
         .then((response) => {
           setErrorUpdate("");
           handleViewStudents(selectedClass);
+          setFileValue(null);
+          addStudentData.innerText = "";
+          fileText.value = "";
         })
         .catch((error) => {
           console.log(error);

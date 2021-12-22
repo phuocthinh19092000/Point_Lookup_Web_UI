@@ -49,7 +49,8 @@ const SubjectTeacher = (props) => {
       .get("/api/listStudentOfSubject?subjectCode=" + item.subjectCode)
       .then((response) => {
         setListStudent(response.data.data || []);
-      });
+      })
+      .catch((error) => console.log(error));
   };
 
   const handleOnClickAdd = (item) => {
@@ -59,6 +60,9 @@ const SubjectTeacher = (props) => {
       .get("/api/listStudentOfSubject?subjectCode=" + item.subjectCode)
       .then((response) => {
         setListStudent(response.data.data || []);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -70,7 +74,6 @@ const SubjectTeacher = (props) => {
       classCode: addData[1].value,
       studentCode: addData[0].value,
     };
-    console.log(data);
     axios
       .post("/api/addStudentInSubject?subjectCode=" + subjectCode, data)
       .then((response) => {
@@ -86,8 +89,7 @@ const SubjectTeacher = (props) => {
               `/api/addScore?studentCode=${data.studentCode}&subjectCode=${subjectCode}`,
               defaultScore
             )
-            .then((response) => {
-            })
+            .then((response) => {})
             .catch((err) => {
               console.log(err);
             });
