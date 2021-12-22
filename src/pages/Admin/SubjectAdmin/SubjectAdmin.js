@@ -4,22 +4,23 @@ import Button from "../../../components/Button/Button";
 import Header from "../../../components/Header/Header";
 import Modal from "react-bootstrap/Modal";
 import { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const SubjectAdmin = () => {
   const [modalAdd, setModalAdd] = useState(false);
   const [subject, setSubject] = useState([]);
+  const [allSubjects, setAllSubjects] = useState([]);
   const [errorMessage, setErrorMessage] = useState([]);
-  const allSubjects = useRef([]);
+  const allSubjectsRef = useRef([]);
 
   useEffect(() => {
     axios
       .get("/api/findAllSubject")
       .then((response) => {
-        console.log(response.data);
         setSubject(response.data.data);
-        allSubjects.current = response.data.data;
+        setAllSubjects(response.data.data);
+        allSubjectsRef.current = response.data.data;
       })
       .catch((err) => {
         console.log(err);
@@ -33,7 +34,6 @@ const SubjectAdmin = () => {
       subjectName: addSubject[1].innerText,
       teacherCode: addSubject[2].innerText,
     };
-    // console.log(data);
     axios
       .post("/api/addSubject", data)
       .then((response) => {
@@ -51,15 +51,15 @@ const SubjectAdmin = () => {
     const searchInput = document.querySelector(".form-control").value;
     console.log(searchInput);
     if (searchInput) {
-      setSubject((pre) =>
-        pre.filter((item) =>
+      setSubject(
+        allSubjectsRef.current.filter((item) =>
           item.subjectName
             .toLowerCase()
-            .includes(searchInput.split("-")[1].trim().toLowerCase())
+            .includes(searchInput.split("-")[1]?.trim().toLowerCase())
         )
       );
     } else {
-      setSubject(allSubjects.current);
+      setSubject(allSubjectsRef.current);
     }
   };
   return (
@@ -98,11 +98,14 @@ const SubjectAdmin = () => {
           <ValidateInput
             name="class-search"
             lable="Tên Môn Học"
-            dropdownList={subject.reduce(
-              (value, item) =>
-                value.concat(`${item.subjectCode} - ${item.subjectName}`),
-              []
-            )}
+            dropdownList={
+              Boolean(allSubjects.length) &&
+              allSubjects.reduce(
+                (value, item) =>
+                  value.concat(`${item.subjectCode} - ${item.subjectName}`),
+                []
+              )
+            }
           />
           <Button title="Dữ liệu" onClick={handleSearchSubjects} />
         </div>
@@ -117,15 +120,16 @@ const SubjectAdmin = () => {
               </tr>
             </thead>
             <tbody>
-              {subject
-                .sort((a, b) => (a.subjectCode < b.subjectCode ? -1 : 1))
-                .map((subject, index) => (
-                  <tr key={index}>
-                    <td>{subject.subjectCode}</td>
-                    <td>{subject.subjectName}</td>
-                    <td>{subject.teacherCode}</td>
-                  </tr>
-                ))}
+              {subject &&
+                subject
+                  .sort((a, b) => (a.subjectCode < b.subjectCode ? -1 : 1))
+                  .map((subject, index) => (
+                    <tr key={index}>
+                      <td>{subject.subjectCode}</td>
+                      <td>{subject.subjectName}</td>
+                      <td>{subject.teacherCode}</td>
+                    </tr>
+                  ))}
             </tbody>
           </Table>
           <div className="add-major">

@@ -1,28 +1,17 @@
 import "./Login.css";
 import Button from "../../components/Button/Button";
 import ValidateInput from "../../components/ValidateInput/ValidateInput";
-import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import backIcon from "../../shared/assets/img/icons8-back-64.png";
 import axios from "axios";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-  Link,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 const Login = () => {
   const history = useHistory();
   const handleSubmitLogin = (e) => {
     e.preventDefault();
     const loginInputs = document.querySelectorAll(".form-control");
-    // console.log({
-    //   username: loginInputs[0].value,
-    //   password: loginInputs[1].value,
-    // })
     axios
-      .post("http://localhost:8080/api/login", {
+      .post("/api/login", {
         username: loginInputs[0].value,
         password: loginInputs[1].value,
       })
@@ -46,7 +35,7 @@ const Login = () => {
           <h1>&&</h1>
           <h1>Quản lý điểm</h1>
         </div>
-        <Link to="/" class="back-to-home">
+        <Link to="/" className="back-to-home">
           <img src={backIcon} alt="" />
           Quay lại trang chủ
         </Link>

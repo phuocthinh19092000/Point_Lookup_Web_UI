@@ -1,14 +1,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  Link,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import axios from "axios";
 
 const PrivateRoute = ({ children, ...rest }) => {

@@ -2,11 +2,9 @@ import "./Register.css";
 import Button from "../../components/Button/Button";
 import ValidateInput from "../../components/ValidateInput/ValidateInput";
 import ValidateSelect from "../../components/ValidateSelect/ValidateSelect";
-import { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 const Register = () => {
-  // const [registerDataMain, setRegisterDataMain] = useState({});
   const history = useHistory();
   const handleOnClick = (e) => {
     e.preventDefault();
@@ -19,11 +17,9 @@ const Register = () => {
     delete registerData["role"];
     delete registerData["codeID"];
     delete registerData["confirmPassword"];
-    console.log(registerData);
     axios
       .post("/api/register", registerData)
       .then((response) => {
-        console.log(response.data);
         alert(response.data);
         history.push("/login");
       })

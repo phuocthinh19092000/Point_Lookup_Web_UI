@@ -14,9 +14,7 @@ const Profile = (props) => {
       .get("/api/findPerson")
       .then((response) => {
         const data = response.data;
-        // console.log(data.data);
         setProfileData((pre) => data.data);
-        // console.log(profileData);
         localStorage.setItem("user", JSON.stringify(data.data));
         props.getUser(data.data);
       })

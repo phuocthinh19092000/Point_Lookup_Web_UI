@@ -1,8 +1,7 @@
-import react from "react";
 import "../Header/Header.css";
 import logo from "../../shared/assets/img/logo.jpg";
 import logout from "../../shared/assets/img/logout.png";
-import { BrowserRouter as Router, Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 const Header = (props) => {
   let history = useHistory();
   const handleLogOut = () => {
@@ -12,11 +11,11 @@ const Header = (props) => {
   return (
     <header className="header-section">
       <div className="logo-container">
-        <img src={logo} alt="" />
+        <img src={logo} alt="logo" />
         <div className="spacer"></div>
         <div className="title">
-          <h3 className="project-name">{"Hệ thống tra cứu & Quản lý điểm"}</h3>
-          <h4 className="project-team">{"PBL6 - Nhóm 5"}</h4>
+          <h3 className="project-name">Hệ thống tra cứu & Quản lý điểm</h3>
+          <h4 className="project-team">PBL6 - Nhóm 5</h4>
         </div>
       </div>
       <div className="navbar">
@@ -50,7 +49,7 @@ const Header = (props) => {
           <div className="login-btn" onClick={handleLogOut}>
             <b>{props.isLoggedIn ? "Đăng xuất" : "Đăng nhập"}</b>
             {props.isLoggedIn && (
-              <img className="logout-icon" src={logout} alt={logout} />
+              <img className="logout-icon" src={logout} alt="logout" />
             )}
           </div>
         </div>

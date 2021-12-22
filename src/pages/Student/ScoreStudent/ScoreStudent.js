@@ -14,7 +14,6 @@ const ScoreStudent = () => {
           JSON.parse(localStorage.getItem("user")).studentCode
       )
       .then((response) => {
-        console.log(response.data);
         setAllScores(response.data.data);
       })
       .catch((error) => {
@@ -27,30 +26,33 @@ const ScoreStudent = () => {
     return Math.round(ave * 100) / 100;
   };
   const averageLetScore = (numScore) => {
-    if (numScore >= 9 ){
-        return "A+"
-    }else if (numScore >= 8.5){
-        return "A"
-    }else if (numScore >= 8){
-        return "B+"
-    }else if (numScore >= 7){
-        return "B"
-    }else if (numScore >= 6.5){
-        return "C+"
-    }else if (numScore >= 5.5){
-        return "C"
-    }else if (numScore >= 5){
-        return "D+"
-    }else if (numScore >= 4){
-        return "D"
-    }else{
-        return "F"
+    if (numScore >= 9) {
+      return "A+";
+    } else if (numScore >= 8.5) {
+      return "A";
+    } else if (numScore >= 8) {
+      return "B+";
+    } else if (numScore >= 7) {
+      return "B";
+    } else if (numScore >= 6.5) {
+      return "C+";
+    } else if (numScore >= 5.5) {
+      return "C";
+    } else if (numScore >= 5) {
+      return "D+";
+    } else if (numScore >= 4) {
+      return "D";
+    } else {
+      return "F";
     }
   };
 
   return (
     <div className="score-student-page">
-      <Header isLoggedIn = {true} name ={JSON.parse(localStorage.getItem('user')).fullName}>
+      <Header
+        isLoggedIn={true}
+        name={JSON.parse(localStorage.getItem("user")).fullName}
+      >
         <div className="nav-item-header">
           <b>Cá nhân</b>
           <div className="dropdown-content">
@@ -74,7 +76,7 @@ const ScoreStudent = () => {
         <Table responsive bordered hover>
           <thead>
             <tr>
-              <th>Học kì</th>
+              {/* <th>Học kì</th> */}
               <th>Số môn học</th>
               <th>Điểm trung bình ở học kì</th>
               <th>Điểm trung bình tích lũy</th>
@@ -82,20 +84,7 @@ const ScoreStudent = () => {
           </thead>
           <tbody>
             <tr>
-              <th>1/2021</th>
-              <td>6</td>
-              <td>9</td>
-              <td>9</td>
-            </tr>
-            <tr>
-              <th>2/2021</th>
-              <td>5</td>
-              <td>10</td>
-              <td>9.8</td>
-            </tr>
-            <tr>
-              <th>3/2021</th>
-              <td>10</td>
+              <td>{allScores.length}</td>
               <td>8</td>
               <td>8.7</td>
             </tr>
@@ -128,31 +117,34 @@ const ScoreStudent = () => {
             </tr>
           </thead>
           <tbody>
-            {allScores && allScores.map((item, index) => (
-              <tr key={index}>
-                <th>{index + 1}</th>
-                <td>{item.subjects.subjectName}</td>
-                <td>{item.assignmentScore >= 0 && item.assignmentScore}</td>
-                <td>{item.midtermScore >=0 && item.midtermScore}</td>
-                <td>{item.finalScore >=0 && item.finalScore}</td>
-                <td>
-                  { item.finalScore >=0 && averageNumScore(
-                    item.assignmentScore,
-                    item.midtermScore,
-                    item.finalScore
-                  )}
-                </td>
-                <td>
-                  {item.finalScore >=0 && averageLetScore(
-                    averageNumScore(
-                      item.assignmentScore,
-                      item.midtermScore,
-                      item.finalScore
-                    )
-                  )}
-                </td>
-              </tr>
-            ))}
+            {allScores &&
+              allScores.map((item, index) => (
+                <tr key={index}>
+                  <th>{index + 1}</th>
+                  <td>{item.subjects.subjectName}</td>
+                  <td>{item.assignmentScore >= 0 && item.assignmentScore}</td>
+                  <td>{item.midtermScore >= 0 && item.midtermScore}</td>
+                  <td>{item.finalScore >= 0 && item.finalScore}</td>
+                  <td>
+                    {item.finalScore >= 0 &&
+                      averageNumScore(
+                        item.assignmentScore,
+                        item.midtermScore,
+                        item.finalScore
+                      )}
+                  </td>
+                  <td>
+                    {item.finalScore >= 0 &&
+                      averageLetScore(
+                        averageNumScore(
+                          item.assignmentScore,
+                          item.midtermScore,
+                          item.finalScore
+                        )
+                      )}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>

@@ -21,7 +21,6 @@ const LandingPage = () => {
     axios
       .get("/api/findMajor")
       .then((response) => {
-        console.log(response.data);
         setMajors(response.data.data);
       })
       .catch((error) => {
@@ -33,7 +32,6 @@ const LandingPage = () => {
     axios
       .get("/api/findClassByMajor?majorCode=" + e.target.value)
       .then((response) => {
-        // console.log(response.data.data);
         setClasses(response.data.data);
       })
       .catch((error) => {
@@ -47,7 +45,6 @@ const LandingPage = () => {
           document.querySelector("input[name='student-code']").value
       )
       .then((response) => {
-        console.log(response.data.data);
         if (response.data.data) {
           setAllScores(response.data.data);
           setSearchModal(true);

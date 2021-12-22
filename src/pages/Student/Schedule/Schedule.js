@@ -2,13 +2,15 @@ import Table from "react-bootstrap/Table";
 import Header from "../../../components/Header/Header";
 import { Link } from "react-router-dom";
 import Button from "../../../components/Button/Button";
-import ValidateInput from "../../../components/ValidateInput/ValidateInput";
 import ValidateSelect from "../../../components/ValidateSelect/ValidateSelect";
 
 const Schedule = () => {
   return (
     <>
-      <Header isLoggedIn={true} name ={JSON.parse(localStorage.getItem('user')).fullName}>
+      <Header
+        isLoggedIn={true}
+        name={JSON.parse(localStorage.getItem("user")).fullName}
+      >
         <div className="nav-item-header">
           <b>Cá nhân</b>
           <div className="dropdown-content">
@@ -20,21 +22,19 @@ const Schedule = () => {
         </div>
         <div className="nav-item-header">
           <b>Yêu cầu</b>
-          <div className="dropdown-content">
-            
-          </div>
+          <div className="dropdown-content"></div>
         </div>
         <div className="nav-item-header">
           <b>Khác</b>
-          <div className="dropdown-content">
-            
-          </div>
+          <div className="dropdown-content"></div>
         </div>
       </Header>
-      <div class="schedule-page">
-        <h2 style ={{margin:"10px 30px", borderBottom:"solid 1px #111"}}>Lịch học, lịch thi</h2>
-        <div class="search-container">
-          <ValidateSelect  lable="Học kì">
+      <div className="schedule-page">
+        <h2 style={{ margin: "10px 30px", borderBottom: "solid 1px #111" }}>
+          Lịch học, lịch thi
+        </h2>
+        <div className="search-container">
+          <ValidateSelect lable="Học kì">
             <option value="Học kì 1/2021">Học kì 1/2021</option>
             <option selected value="Học kì 2/2021">
               Học kì 2/2021
@@ -42,13 +42,11 @@ const Schedule = () => {
             <option value="Học kì 3/2021">Học kì 3/2021</option>
             <option value="Học kì 4/2021">Học kì 4/2021</option>
           </ValidateSelect>
-          <Button title="Dữ liệu"/>
-            
-          
+          <Button title="Dữ liệu" />
         </div>
-        <div class="average-score">
-          <h5 style ={{borderBottom:"solid 1px #111"}}>Lịch học </h5>
-          <Table class="table">
+        <div className="average-score">
+          <h5 style={{ borderBottom: "solid 1px #111" }}>Lịch học </h5>
+          <Table className="table">
             <thead>
               <tr>
                 <th scope="col">Môn học</th>
@@ -80,15 +78,15 @@ const Schedule = () => {
           </Table>
         </div>
 
-        <div class="detail-score">
-          <h5 style ={{borderBottom:"solid 1px #111"}}>Lịch thi</h5>
-          <Table class="table">
+        <div className="detail-score">
+          <h5 style={{ borderBottom: "solid 1px #111" }}>Lịch thi</h5>
+          <Table className="table">
             <thead>
               <tr>
-                <th scope="col" class="semester">
+                <th scope="col" className="semester">
                   STT
                 </th>
-                <th scope="col" class="subject">
+                <th scope="col" className="subject">
                   Môn học
                 </th>
                 <th scope="col">Nhóm thi</th>

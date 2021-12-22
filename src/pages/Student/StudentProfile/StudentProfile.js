@@ -19,7 +19,6 @@ const StudentProfile = () => {
     axios
       .get("/api/findStudentByCode?studentCode=" + user.studentCode)
       .then((response) => {
-        // console.log(response.data.data.classCode);
         setUser({
           ...user,
           classCode: response.data.data.classCode,

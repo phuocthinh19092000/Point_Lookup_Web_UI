@@ -8,37 +8,99 @@ import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 const ManageClass = () => {
+  const [modalAdd, setModalAdd] = useState(false);
+  const [updClass, setUpdClass] = useState({});
+  const [modalUpdate, setModalUpdate] = useState(false);
+  const [fileValue, setFileValue] = useState();
+  const [teacher, setTeacher] = useState("");
+  const [errorUpdate, setErrorUpdate] = useState("");
   const [studentsModal, setStudentsModal] = useState(false);
   const [classes, setClasses] = useState([]);
+  const [allClasses, setAllClasses] = useState([]);
   const [selectedClass, setSelectedClass] = useState({});
   const [students, setStudents] = useState([]);
   const location = useLocation();
-  const allClasses = useRef([]);
+  const allClassesRef = useRef([]);
 
   useEffect(() => {
     axios
-      .get(
-        "http://127.0.0.1:8080/api/findClassByMajor?majorCode=" +
-          location.state.params.majorCode
-      )
+      .get("/api/findClassByMajor?majorCode=" + location.state.params.majorCode)
       .then((response) => {
-        console.log(response.data.data);
         setClasses(response.data.data);
-        allClasses.current = response.data.data;
+        setAllClasses(response.data.data);
+        allClassesRef.current = response.data.data;
       })
       .catch((error) => {
         console.log(error, "myError");
       });
-  }, []);
-
+  }, [modalAdd, modalUpdate]);
+  const handleAddClass = () => {
+    const addClassData = document.querySelectorAll(".add-class-data");
+    const data = {
+      classCode: addClassData[0].innerText,
+      className: addClassData[1].innerText,
+    };
+    axios
+      .post(
+        `/api/addClass?majorName=${location.state.params.majorName}&userNameTeacher=${teacher}`,
+        data
+      )
+      .then((reponse) => {
+        setModalAdd(false);
+        setErrorUpdate("");
+      })
+      .catch((err) => {
+        console.log(err);
+        setErrorUpdate("Thêm lớp thất bại");
+      });
+  };
+  const handleAddStudents = () => {
+    const addStudentData = document.querySelector(".add-student-data");
+    if (fileValue) {
+      const formData = new FormData();
+      formData.append("file", fileValue);
+      axios
+        .post(
+          `/api/uploadStudentInClass?classCode=${selectedClass.classCode}`,
+          formData,
+          {
+            headers: { "Content-Type": "multipart/form-data" },
+          }
+        )
+        .then((response) => {
+          setErrorUpdate("");
+          handleViewStudents(selectedClass);
+        })
+        .catch((error) => {
+          console.log(error);
+          setErrorUpdate("Thêm thất bại");
+        });
+    } else {
+      axios
+        .post(
+          `/api/addStudentInClass?classCode=${selectedClass.classCode}&studentCode=${addStudentData.innerText}`
+        )
+        .then((response) => {
+          setErrorUpdate("");
+          addStudentData.innerText = "";
+          handleViewStudents(selectedClass);
+        })
+        .catch((error) => {
+          console.log(error);
+          setErrorUpdate("Thêm học sinh thất bại");
+        });
+    }
+  };
   const handleSearchMajor = () => {
     const searchInput = document.querySelector(".form-control").value;
     if (searchInput) {
-      setClasses((pre) =>
-        pre.filter((item) => item.className.includes(searchInput))
+      setClasses(
+        allClassesRef.current.filter((item) =>
+          item.className.includes(searchInput)
+        )
       );
     } else {
-      setClasses(allClasses.current);
+      setClasses(allClassesRef.current);
     }
   };
   const handleViewStudents = (item) => {
@@ -47,12 +109,38 @@ const ManageClass = () => {
     axios
       .get("/api/findStudentByClassCode?classCode=" + item.classCode)
       .then((response) => {
-        console.log(response.data.data);
         setStudents(response.data.data);
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleUpdataClass = (updateClass) => {
+    const className = document.querySelector(".update-class-data").innerText;
+    if (!className.trim()) {
+      setErrorUpdate("Không để trống tên lớp");
+      // setModalUpdate(false)
+    } else if (className === updateClass.className) {
+      setModalUpdate(false);
+    } else {
+      const data = {
+        code: updateClass.classCode,
+        name: className,
+      };
+      axios
+        .put(
+          `/api/updateClassName?classCode=${data.code}&className=${data.name}`
+        )
+        .then((response) => {
+          setModalUpdate(false);
+          setErrorUpdate("");
+        })
+        .catch((err) => {
+          console.log("Lỗi: ", err);
+          setErrorUpdate("cập nhật thất bại");
+        });
+    }
   };
 
   return (
@@ -92,8 +180,11 @@ const ManageClass = () => {
             name="class-search"
             lable="Tên Lớp"
             dropdownList={
-              classes &&
-              classes.reduce((value, item) => value.concat(item.className), [])
+              Boolean(allClasses?.length) &&
+              allClasses.reduce(
+                (value, item) => value.concat(item.className),
+                []
+              )
             }
           />
           <Button title="Dữ liệu" onClick={handleSearchMajor} />
@@ -106,7 +197,7 @@ const ManageClass = () => {
                 <th>Mã Lớp</th>
                 <th>Tên lớp</th>
                 <th>Chi tiết</th>
-                <th>Xóa, sửa</th>
+                <th>Sửa</th>
               </tr>
             </thead>
             <tbody>
@@ -126,14 +217,20 @@ const ManageClass = () => {
                         </p>
                       </td>
                       <td className="edit-major">
-                        <Button title="Sửa" />
+                        <Button
+                          title="Sửa"
+                          onClick={() => {
+                            setModalUpdate(true);
+                            setUpdClass(item);
+                          }}
+                        />
                       </td>
                     </tr>
                   ))}
             </tbody>
           </Table>
           <div className="add-major">
-            <Button title="Thêm lớp" />
+            <Button title="Thêm lớp" onClick={() => setModalAdd(true)} />
           </div>
         </div>
       </div>
@@ -142,6 +239,7 @@ const ManageClass = () => {
         onHide={() => {
           setStudentsModal(false);
           setStudents([]);
+          setErrorUpdate("");
         }}
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
@@ -152,7 +250,14 @@ const ManageClass = () => {
             {selectedClass.classCode} - {selectedClass.className}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ textAlign: "center", fontSize: "large" }}>
+          <label>Thêm học sinh bằng file: </label> &#160;
+          <input
+            type="file"
+            className="upload-file"
+            onChange={(e) => setFileValue(e.target.files[0])}
+            style={{ marginBottom: "20px" }}
+          />
           <Table className="detail-score-table" responsive bordered hover>
             <thead>
               <tr>
@@ -170,9 +275,103 @@ const ManageClass = () => {
                       <th>{item.person.fullName}</th>
                     </tr>
                   ))}
+              <tr>
+                <th
+                  contentEditable={true}
+                  className="add-student-data"
+                  colSpan="2"
+                ></th>
+              </tr>
             </tbody>
           </Table>
+          <p style={{ color: "red", marginTop: "20px" }}>{errorUpdate}</p>
         </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleAddStudents} title="Thêm học sinh" />
+        </Modal.Footer>
+      </Modal>
+      {/* Add Modal */}
+      <Modal
+        size="md"
+        show={modalAdd}
+        onHide={() => {
+          setModalAdd(false);
+          setErrorUpdate("");
+        }}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">Thêm lớp</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ textAlign: "center", fontSize: "large" }}>
+          <Table responsive bordered hover>
+            <thead>
+              <tr>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th contentEditable={true} className="add-class-data"></th>
+                <th contentEditable={true} className="add-class-data"></th>
+              </tr>
+            </tbody>
+          </Table>
+          <div style={{ marginTop: "20px" }}></div>
+          <label htmlFor="add-class-data">Giáo viên chủ nhiệm:</label>
+          &#160;&#160;
+          <input
+            name="add-class-data"
+            onChange={(e) => {
+              setTeacher(e.target.value);
+            }}
+          />
+          <p style={{ color: "red", marginTop: "20px" }}>{errorUpdate}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button onClick={handleAddClass} title="Xác nhận" />
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        size="md"
+        show={modalUpdate}
+        onHide={() => {
+          setModalUpdate(false);
+          setErrorUpdate("");
+        }}
+        aria-labelledby="example-modal-sizes-title-lg"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-lg">
+            Cập nhật khoa
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ textAlign: "center", fontSize: "large" }}>
+          <Table responsive bordered hover>
+            <thead>
+              <tr>
+                <th>Mã lớp</th>
+                <th>Tên lớp</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>{updClass.classCode}</th>
+                <th contentEditable={true} className="update-class-data">
+                  {updClass.className}
+                </th>
+              </tr>
+            </tbody>
+          </Table>
+          <p style={{ color: "red" }}>{errorUpdate}</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            title="Xác nhận"
+            onClick={() => handleUpdataClass(updClass)}
+          />
+        </Modal.Footer>
       </Modal>
     </>
   );

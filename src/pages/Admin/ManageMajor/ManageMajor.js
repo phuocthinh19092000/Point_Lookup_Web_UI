@@ -6,14 +6,13 @@ import Header from "../../../components/Header/Header";
 import Modal from "react-bootstrap/Modal";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 const ManageMajor = () => {
-  // const [modalDel, setModalDel] = useState(false);
   const [modalAdd, setModalAdd] = useState(false);
   const [modalUpdate, setModalUpdate] = useState(false);
   const [majors, setMajors] = useState([]);
-  const allMajors = useRef([]);
-  // const [delMajor, setDelMajor] = useState({});
+  const [allMajors, setAllMajors] = useState([]);
+  const allMajorsRef = useRef([]);
   const [updMajor, setUpdMajor] = useState({});
   const [errorUpdate, setErrorUpdate] = useState("");
   const history = useHistory();
@@ -22,51 +21,34 @@ const ManageMajor = () => {
   };
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:8080/api/findMajor").then((response) => {
+    axios.get("/api/findMajor").then((response) => {
       // console.log(response.data.data);
       setMajors(response.data.data);
-      allMajors.current = response.data.data;
+      setAllMajors(response.data.data);
+      allMajorsRef.current = response.data.data;
     });
   }, [modalAdd, modalUpdate]);
-  // const handleDelMajor = (majorCode) => {
-  //   // console.log(majorCode);
-  //   axios
-  //     .delete("http://localhost:8080/api/DeleteMajorByCode/" + majorCode)
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log("Lỗi", err);
-  //     });
-  //   setModalDel(false);
-  // };
 
   const handleAddlMajor = () => {
     const addMajorData = document.querySelectorAll(".add-major-data");
-    console.log({
-      majorCode: addMajorData[0].innerText,
-      majorName: addMajorData[1].innerText,
-    });
     axios
-      .post("http://localhost:8080/api/addMajor", {
+      .post("/api/addMajor", {
         majorCode: addMajorData[0].innerText,
         majorName: addMajorData[1].innerText,
       })
-      .then((response) => console.log(response.data))
+      .then((response) => {
+        setModalAdd(!modalAdd);
+      })
       .catch((err) => console.log(err));
-    setModalAdd(false);
   };
 
   const handleUpdataMajor = (updateMajor) => {
-    // console.log(updateMajor);
     const majorName = document.querySelector(".update-major-data").innerText;
-    // console.log(majorName);
     if (!majorName.trim()) {
       setErrorUpdate("Không để trống tên khoa");
       // setModalUpdate(false)
     } else if (majorName === updateMajor.majorName) {
       setModalUpdate(false);
-      // console.log("trùng")
     } else {
       const data = {
         majorCode: updateMajor.majorCode,
@@ -75,7 +57,6 @@ const ManageMajor = () => {
       axios
         .put("/api/updateMajor", data)
         .then((response) => {
-          console.log(response.data);
           setModalUpdate(false);
           setErrorUpdate("");
         })
@@ -89,11 +70,13 @@ const ManageMajor = () => {
   const handleSearchMajor = () => {
     const searchInput = document.querySelector(".form-control").value;
     if (searchInput) {
-      setMajors((pre) =>
-        pre.filter((item) => item.majorName.includes(searchInput))
+      setMajors(
+        allMajorsRef.current.filter((item) =>
+          item.majorName.includes(searchInput)
+        )
       );
     } else {
-      setMajors(allMajors.current);
+      setMajors(allMajorsRef.current);
     }
   };
 
@@ -133,10 +116,13 @@ const ManageMajor = () => {
           <ValidateInput
             name="major"
             lable="Tên khoa"
-            dropdownList={majors.reduce(
-              (value, item) => value.concat(item.majorName),
-              []
-            )}
+            dropdownList={
+              Boolean(allMajors?.length) &&
+              allMajors.reduce(
+                (value, item) => value.concat(item.majorName),
+                []
+              )
+            }
           />
           <Button title="Dữ liệu" onClick={handleSearchMajor} />
         </div>
@@ -152,39 +138,40 @@ const ManageMajor = () => {
               </tr>
             </thead>
             <tbody>
-              {majors
-                .sort((a, b) => (a.majorCode < b.majorCode ? -1 : 1))
-                .map((item, index) => (
-                  <tr key={index}>
-                    <th>{item.majorCode}</th>
-                    <td>{item.majorName}</td>
-                    <td>
-                      <p
-                        className="view-classes"
-                        onClick={() => handleViewClasses(item)}
-                      >
-                        Xem các lớp
-                      </p>
-                    </td>
-                    <td className="edit-major">
-                      {/* <Button
+              {majors &&
+                majors
+                  .sort((a, b) => (a.majorCode < b.majorCode ? -1 : 1))
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <th>{item.majorCode}</th>
+                      <td>{item.majorName}</td>
+                      <td>
+                        <p
+                          className="view-classes"
+                          onClick={() => handleViewClasses(item)}
+                        >
+                          Xem các lớp
+                        </p>
+                      </td>
+                      <td className="edit-major">
+                        {/* <Button
                       title="Xóa"
                       // onClick={() => {
                       //   setModalDel(true);
                       //   setDelMajor(item);
                       // }}
                     /> */}
-                      <Button
-                        className="edit-major"
-                        title="Sửa"
-                        onClick={() => {
-                          setModalUpdate(true);
-                          setUpdMajor(item);
-                        }}
-                      />
-                    </td>
-                  </tr>
-                ))}
+                        <Button
+                          className="edit-major"
+                          title="Sửa"
+                          onClick={() => {
+                            setModalUpdate(true);
+                            setUpdMajor(item);
+                          }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
             </tbody>
           </Table>
           <div className="add-major">

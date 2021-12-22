@@ -1,29 +1,41 @@
 import "./ManageTeacherAccount.css";
 import Table from "react-bootstrap/Table";
-import ValidateSelect from "../../../components/ValidateSelect/ValidateSelect";
 import ValidateInput from "../../../components/ValidateInput/ValidateInput";
 import Button from "../../../components/Button/Button";
 import Header from "../../../components/Header/Header";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 const ManageTeacherAccount = () => {
   const [listTeacher, setListTeacher] = useState([]);
-
+  const allTeachers = useRef([]);
   useEffect(() => {
     axios
       .get("/api/listPerson?roleCode=TEACHER")
       .then((response) => {
-        console.log(response.data.data);
         setListTeacher(response.data.data);
+        allTeachers.current = response.data.data;
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
+  const handleSearchTeacher = () => {
+    const searchInput = document.querySelector(".form-control").value;
+    if (searchInput) {
+      setListTeacher((pre) =>
+        pre.filter((item) => item.fullName.includes(searchInput))
+      );
+    } else {
+      setListTeacher(allTeachers.current);
+    }
+  };
   return (
     <>
-      <Header name="admin Thịnh" isLoggedIn={true}>
+      <Header
+        isLoggedIn={true}
+        name={JSON.parse(localStorage.getItem("user")).fullName}
+      >
         <div className="nav-item-header">
           <b>Cá nhân</b>
           <div className="dropdown-content">
@@ -52,21 +64,19 @@ const ManageTeacherAccount = () => {
           Trang quản lí tài khoản giáo viên
         </h2>
         <div className="search-container">
-          <ValidateSelect name="major" lable="Ngành">
-            <option className="default-option" value="">
-              -Chọn ngành-
-            </option>
-            <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-            <option value="Công nghệ sinh học">Công nghệ sinh học</option>
-            <option value="Kiến trúc">Kiến trúc</option>
-            <option value="Nhiệt điện">Nhiệt điện</option>
-          </ValidateSelect>
           <ValidateInput
             name="teacher-name"
+            className="search-teacher"
             lable="Tên"
-            dropdownList={["a", "aa", "aaa"]}
+            dropdownList={
+              listTeacher &&
+              listTeacher.reduce(
+                (value, item) => value.concat(item.fullName),
+                []
+              )
+            }
           />
-          <Button title="Dữ liệu" />
+          <Button title="Dữ liệu" onClick={handleSearchTeacher} />
         </div>
         <div className="manage-account">
           <h5>Quản lý tài khoản giáo viên</h5>

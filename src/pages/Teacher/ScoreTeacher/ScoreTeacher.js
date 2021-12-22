@@ -5,23 +5,20 @@ import Button from "../../../components/Button/Button";
 import Table from "react-bootstrap/Table";
 // import Modal from "react-bootstrap/Modal";
 import Header from "../../../components/Header/Header";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ScoreTeacher = (props) => {
+  const [flag, setFlag] = useState(true);
   const [subjects, setSubjects] = useState([]);
   const [currentSubjects, setCurrentSubjects] = useState();
   const [students, setStudents] = useState([]);
-  // const [info, setInfo] = useState({});
-  // const [lgShow, setLgShow] = useState(false);
-  const allSubject = useRef([]);
 
   useEffect(() => {
     axios
       .get("/api/findAllSubject")
       .then((response) => {
-        console.log(response.data.data);
         setSubjects(
           response.data.data.filter(
             (item) =>
@@ -38,59 +35,15 @@ const ScoreTeacher = (props) => {
       axios
         .get("/api/listStudentOfSubject?subjectCode=" + currentSubjects)
         .then((response) => {
-          console.log(response.data.data);
           setStudents(response.data.data);
         })
         .catch((error) => console.log(error));
-  }, [currentSubjects]);
-
-  // const handleShowModal = (item) => {
-  //   // const selectedRowInfo = e.target.closest("tr").querySelectorAll("td");
-  //   setInfo((prev) => ({
-  //     studentCode: item.person.studentCode,
-  //     studentName: item.person.fullName,
-  //     BT: item.scores[0] ? item.scores[0].assignmentScore : "",
-  //     GK: item.scores[0] ? item.scores[0].midtermScore : "",
-  //     CK: item.scores[0] ? item.scores[0].finalScore : "",
-  //   }));
-  //   setLgShow(true);
-  // };
-
-  // const handleAddScore = () => {
-  //   const scores = document
-  //     .querySelector(".modal-table")
-  //     .querySelector(".edit-score-row")
-  //     .querySelectorAll("td");
-  //   const scoreData = {
-  //     assignmentScore: +scores[0].innerText,
-  //     finalScore: +scores[2].innerText,
-  //     hardWorkScore: 0,
-  //     midtermScore: +scores[1].innerText,
-  //   };
-  //   // console.log(scoreData)
-  //   // console.log(info.studentCode)
-  //   // console.log(currentSubjects)
-  //   axios
-  //     .post(
-  //       `/api/addScore?studentCode=${info.studentCode}&subjectCode=${currentSubjects}`,
-  //       scoreData
-  //     )
-  //     .then((response) => {
-  //       console.log(response.data);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-
-  //   setLgShow(false);
-  // };
+  }, [currentSubjects, flag]);
 
   const handleUpdateScore = () => {
     const allRows = document.querySelector("tbody").querySelectorAll("tr");
-    // console.log(allRows);
     const allScores = [];
     allRows.forEach((item) => {
-      // console.log(item.querySelectorAll("td"));
       const score = item.querySelectorAll("td");
       allScores.push({
         students: { studentCode: item.querySelector("th").innerText },
@@ -100,11 +53,10 @@ const ScoreTeacher = (props) => {
         finalScore: score[3].innerText ? +score[3].innerText : -1,
       });
     });
-    console.log(allScores);
     axios
       .put("/api/updateManyScore", allScores)
       .then((response) => {
-        console.log(response);
+        setFlag(!flag);
       })
       .catch((err) => {
         console.log(err);
@@ -118,7 +70,6 @@ const ScoreTeacher = (props) => {
     } else {
       setCurrentSubjects("");
     }
-    console.log(searchInput);
   };
   const averageNumScore = (exe, mid, fin) => {
     const ave = exe * 0.2 + mid * 0.3 + fin * 0.5;
@@ -172,61 +123,6 @@ const ScoreTeacher = (props) => {
         </div>
       </Header>
       <h2 className="score-page-title">Kết quả học tập</h2>
-      {/* <Modal
-        size="lg"
-        show={lgShow}
-        onHide={() => setLgShow(false)}
-        aria-labelledby="example-modal-sizes-title-lg"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title id="example-modal-sizes-title-lg">
-            {info.studentName}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Table
-            className="detail-score-table modal-table"
-            responsive
-            bordered
-            hover
-          >
-            <thead>
-              <tr>
-                <th>Bài tập</th>
-                <th>Giữa kì</th>
-                <th>Cuối kì</th>
-              
-              </tr>
-            </thead>
-            <tbody>
-              <tr className="edit-score-row">
-                <td
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                >
-                  {info.BT}
-                </td>
-                <td
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                >
-                  {info.GK}
-                </td>
-                <td
-                  contentEditable={true}
-                  suppressContentEditableWarning={true}
-                >
-                  {info.CK}
-                </td>
-           
-              </tr>
-            </tbody>
-          </Table>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={handleAddScore} title="Save" />
-        </Modal.Footer>
-      </Modal> */}
       <div className="search-container">
         <ValidateSelect name="subject" lable="Môn học">
           <option className="default-option" value="">
@@ -278,7 +174,6 @@ const ScoreTeacher = (props) => {
                 .map((item, index) => (
                   <tr key={index}>
                     {" "}
-                    {/* onClick={() => handleShowModal(item)} */}
                     <th>{item.person.studentCode}</th>
                     <td>{item.person.fullName}</td>
                     <td

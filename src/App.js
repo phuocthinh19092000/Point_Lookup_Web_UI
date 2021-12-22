@@ -1,8 +1,4 @@
-import { useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import Header from "./components/Header/Header";
-import Profile from "./components/Profile/Profile";
 import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";

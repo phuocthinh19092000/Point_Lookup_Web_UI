@@ -17,14 +17,21 @@ const SubjectTeacher = (props) => {
   const [errorMessage, setErrorMessage] = useState(false);
   const [listStudent, setListStudent] = useState([]);
   const allSubjectsRef = useRef([]);
+  const [allSubjects, setAllSubjects] = useState([]);
   useEffect(() => {
     axios
       .get("/api/findAllSubject")
       .then((response) => {
         const allSubjects = response.data.data;
-        console.log(allSubjects);
         allSubjectsRef.current = allSubjects;
         setSubjects(
+          allSubjects.filter(
+            (subject) =>
+              subject.teacherCode ===
+              JSON.parse(localStorage.getItem("user")).teacherCode
+          )
+        );
+        setAllSubjects(
           allSubjects.filter(
             (subject) =>
               subject.teacherCode ===
@@ -44,7 +51,6 @@ const SubjectTeacher = (props) => {
         setListStudent(response.data.data || []);
       });
   };
-  // console.log(listStudent)
 
   const handleOnClickAdd = (item) => {
     setAddModal(true);
@@ -64,12 +70,10 @@ const SubjectTeacher = (props) => {
       classCode: addData[1].value,
       studentCode: addData[0].value,
     };
-    console.log([data], subjectCode);
     console.log(data);
     axios
       .post("/api/addStudentInSubject?subjectCode=" + subjectCode, data)
       .then((response) => {
-        console.log(response.data);
         if (response.data === "Thêm thành công") {
           const defaultScore = {
             assignmentScore: -1,
@@ -83,7 +87,6 @@ const SubjectTeacher = (props) => {
               defaultScore
             )
             .then((response) => {
-              console.log(response.data);
             })
             .catch((err) => {
               console.log(err);
@@ -95,7 +98,7 @@ const SubjectTeacher = (props) => {
         }
       })
       .catch((err) => {
-        console.log("err");
+        console.log(err);
         setErrorMessage(true);
       });
   };
@@ -103,11 +106,11 @@ const SubjectTeacher = (props) => {
   const handleSearchSubjects = () => {
     const searchValue = document.querySelector("input[name='subject']").value;
     if (searchValue) {
-      setSubjects((pre) =>
-        pre.filter((item) => item.subjectName.includes(searchValue))
+      setSubjects(
+        allSubjects.filter((item) => item.subjectName.includes(searchValue))
       );
     } else {
-      setSubjects(allSubjectsRef.current);
+      setSubjects(allSubjects);
     }
   };
 
@@ -142,7 +145,7 @@ const SubjectTeacher = (props) => {
         <ValidateInput
           name="subject"
           lable="Môn học"
-          dropdownList={subjects.reduce(
+          dropdownList={allSubjects.reduce(
             (list, item) => list.concat(item.subjectName),
             []
           )}
@@ -161,28 +164,30 @@ const SubjectTeacher = (props) => {
             </tr>
           </thead>
           <tbody>
-            {subjects.map((item, index) => (
-              <tr key={index}>
-                <th>{item.subjectCode}</th>
-                <td>{item.subjectName}</td>
-                <td>
-                  <p
-                    className="view-students"
-                    onClick={() => handleOnClickView(item)}
-                  >
-                    Chi tiết
-                  </p>
-                </td>
-                <td>
-                  <p
-                    className="view-students"
-                    onClick={() => handleOnClickAdd(item)}
-                  >
-                    Chi tiết
-                  </p>
-                </td>
-              </tr>
-            ))}
+            {subjects
+              .sort((a, b) => (a.subjectCode < b.subjectCode ? -1 : 1))
+              .map((item, index) => (
+                <tr key={index}>
+                  <th>{item.subjectCode}</th>
+                  <td>{item.subjectName}</td>
+                  <td>
+                    <p
+                      className="view-students"
+                      onClick={() => handleOnClickView(item)}
+                    >
+                      Chi tiết
+                    </p>
+                  </td>
+                  <td>
+                    <p
+                      className="view-students"
+                      onClick={() => handleOnClickAdd(item)}
+                    >
+                      Chi tiết
+                    </p>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </Table>
       </div>
