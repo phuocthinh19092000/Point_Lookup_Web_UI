@@ -11,10 +11,13 @@ const Login = () => {
     e.preventDefault();
     const loginInputs = document.querySelectorAll(".form-control");
     axios
-      .post("/api/login", {
-        username: loginInputs[0].value,
-        password: loginInputs[1].value,
-      })
+      .post(
+        "http://pbl6-point-lookup.us-east-1.elasticbeanstalk.com/api/login",
+        {
+          username: loginInputs[0].value,
+          password: loginInputs[1].value,
+        }
+      )
       .then((response) => {
         localStorage.setItem("token", response.data);
         history.push("/adminprofile");
