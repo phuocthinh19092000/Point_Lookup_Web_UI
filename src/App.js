@@ -19,7 +19,8 @@ import PrivateRoute from "./components/CustomRoute/PrivateRoute";
 import "bootstrap/dist/css/bootstrap.min.css";
 import axios from "axios";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-axios.defaults.baseURL = "http://127.0.0.1:8080";
+axios.defaults.baseURL =
+  "http://pbl6-point-lookup.us-east-1.elasticbeanstalk.com";
 // axios.defaults.headers = {
 //   Authorization: "Bearer ".concat(localStorage.getItem("token")),
 // };
